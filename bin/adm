@@ -1,0 +1,122 @@
+#!/usr/bin/env bash
+# adm — lightweight dispatcher
+# Routes: adm <group> <command> [args...]
+# Example: adm user new <username> <password>
+#          adm disk check
+
+set -euo pipefail
+
+ADM_NAME="${ADM_NAME:-adm}"
+ADM_LIB_DIR="${ADM_LIB_DIR:-/usr/local/lib/adm}"
+
+print_usage() {
+  cat <<EOF
+${ADM_NAME} — system admin command dispatcher
+
+Usage:
+  ${ADM_NAME} <group> <command> [args...]
+  ${ADM_NAME} help [<group> [<command>]]
+  ${ADM_NAME} --help | -h
+  ${ADM_NAME} --version | -v
+
+Examples:
+  ${ADM_NAME} user new <username> <password>
+  ${ADM_NAME} user backup <username>
+  ${ADM_NAME} disk check
+
+Environment:
+  ADM_LIB_DIR   Override the commands root (default: ${ADM_LIB_DIR})
+
+Commands live at:
+  \${ADM_LIB_DIR}/<group>/<command>.sh
+    e.g., ${ADM_LIB_DIR}/user/new.sh
+          ${ADM_LIB_DIR}/user/backup.sh
+          ${ADM_LIB_DIR}/disk/check.sh
+EOF
+}
+
+print_version() {
+  echo "${ADM_NAME} dispatcher 1.0"
+}
+
+# Lists all available commands, or those under a specific group
+list_commands() {
+  local group="${1:-}"
+  if [[ -n "${group}" ]]; then
+    local dir="${ADM_LIB_DIR}/${group}"
+    [[ -d "${dir}" ]] || { echo "No such group: ${group}" >&2; return 1; }
+    printf "Available commands in '%s':\n" "${group}"
+    find "${dir}" -maxdepth 1 -type f -name '*.sh' -printf '  %f\n' \
+      | sed -E 's/\.sh$//g' | sort
+  else
+    printf "Available groups and commands under %s:\n" "${ADM_LIB_DIR}"
+    # Print as: group/command
+    if command -v find >/dev/null 2>&1; then
+      find "${ADM_LIB_DIR}" -type f -name '*.sh' -printf '  %P\n' \
+        | sed -E 's/\.sh$//g' | sort
+    else
+      # Minimal fallback without GNU/BSD find -printf
+      (cd "${ADM_LIB_DIR}" 2>/dev/null && \
+        for f in */*.sh; do printf "  %s\n" "${f%.sh}"; done) || true
+    fi
+  fi
+}
+
+# Show help for a specific command if it supports -h/--help
+show_command_help() {
+  local group="$1" cmd="$2"
+  local script
+  script="$(resolve_script_path "${group}" "${cmd}")" || return 1
+  if [[ -x "${script}" ]]; then
+    if "${script}" -h >/dev/null 2>&1; then
+      "${script}" -h || true
+      return 0
+    elif "${script}" --help >/dev/null 2>&1; then
+      "${script}" --help || true
+      return 0
+    fi
+  fi
+  echo "No specific help from ${group} ${cmd}. Script: ${script}"
+}
+
+# Resolve to an executable script path, allowing hyphen/underscore aliases
+resolve_script_path() {
+  local group="$1" cmd="$2"
+  local try
+  for try in \
+    "${ADM_LIB_DIR}/${group}/${cmd}.sh" \
+    "${ADM_LIB_DIR}/${group}/${cmd//-/_}.sh" \
+    "${ADM_LIB_DIR}/${group}/${cmd//_/-}.sh"
+  do
+    if [[ -f "${try}" ]]; then
+      echo "${try}"
+      return 0
+    fi
+  done
+  echo "Command not found: ${group} ${cmd}" >&2
+  return 1
+}
+
+dispatch() {
+  local group="$1"; shift
+  local cmd="$1"; shift
+
+  local script
+  script="$(resolve_script_path "${group}" "${cmd}")"
+
+  if [[ ! -x "${script}" ]]; then
+    # If present but not executable, try to execute via bash
+    if [[ -f "${script}" ]]; then
+      exec bash "${script}" "$@"
+    else
+      echo "No such command script: ${script}" >&2
+      exit 127
+    fi
+  else
+    exec "${script}" "$@"
+  fi
+}
+
+main() {
+  # No args -> usage + list
+  if [[ $# -eq 0 ]]; then
