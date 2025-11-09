@@ -36,7 +36,7 @@ EOF
 }
 
 print_version() {
-  dispatch "self" "version" "$@"
+  cat ${ADM_LIB_DIR}/self/VERSION
 }
 
 # Lists all available commands, or those under a specific group

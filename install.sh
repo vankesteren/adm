@@ -67,6 +67,10 @@ if [ ! -f "$REPO_BIN_ADM" ]; then
   exit 1
 fi
 
+# add version
+git -C $TMPDIR/repo rev-parse HEAD > $REPO_LIB/self/VERSION
+
+
 # Create target dirs
 echo "→ Ensuring target directories exist..."
 $SUDO mkdir -p "$BIN_DIR"
@@ -120,8 +124,6 @@ Examples:
   adm --help
   adm user new <username> <password>
   adm disk check
-
-To update later, just re-run the same install command.
 
 Customize install:
   PREFIX=/opt BRANCH=main \\
