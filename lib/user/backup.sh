@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
 # Simple user home backup
-# Usage: sudo backupuser <username>
+# Usage: sudo adm user backup <username>
 
 set -euo pipefail
 
 if [ $# -ne 1 ]; then
-  echo "Usage: sudo $0 <username>" >&2
+  echo "Usage: sudo adm user backup <username>" >&2
   exit 1
 fi
 

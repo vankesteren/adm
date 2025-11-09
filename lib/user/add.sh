@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
 # Secure user creation script with confirmation prompt
-# Usage: sudo newuser <username> <password>
+# Usage: sudo adm user add <username> <password>
 
 set -euo pipefail
 
 # --- Check arguments ---
 if [ $# -ne 2 ]; then
-  echo "Usage: sudo $0 <username> <password>"
+  echo "Usage: sudo adm user add <username> <password>"
   exit 1
 fi
 

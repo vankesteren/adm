@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Remove a user and their data cleanly (with explicit confirmation)
-# Usage: sudo removeuser <username>
+# Usage: sudo adm user delete <username>
 
 set -euo pipefail
 
@@ -12,7 +12,7 @@ fi
 
 # --- Args ---
 if [ $# -ne 1 ]; then
-  echo "Usage: sudo $0 <username>" >&2
+  echo "Usage: sudo adm user delete <username>" >&2
   exit 1
 fi
 
