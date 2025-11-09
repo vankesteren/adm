@@ -51,9 +51,6 @@ if [[ ! -d "$DATA_DIR" ]]; then
   exit 1
 fi
 
-echo "→ Checking user home directory sizes under $DATA_DIR ..."
-echo
-
 if [[ "$HUMAN" -eq 1 ]]; then
   DU_OPTS=(-sh)
 else
@@ -71,6 +68,3 @@ if [[ "$TOTAL" -eq 1 ]]; then
   echo "Total size of all user directories:"
   du -sh "$DATA_DIR" 2>/dev/null
 fi
-
-echo
-echo "✅ Done."
