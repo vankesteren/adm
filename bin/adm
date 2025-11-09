@@ -120,3 +120,62 @@ dispatch() {
 main() {
   # No args -> usage + list
   if [[ $# -eq 0 ]]; then
+    print_usage
+    echo
+    list_commands || true
+    exit 1
+  fi
+
+  case "${1:-}" in
+    -h|--help)
+      print_usage
+      echo
+      list_commands || true
+      exit 0
+      ;;
+    -v|--version)
+      print_version
+      exit 0
+      ;;
+    help)
+      shift
+      case "${#}" in
+        0)
+          print_usage
+          echo
+          list_commands || true
+          ;;
+        1)
+          list_commands "$1" || exit 1
+          ;;
+        *)
+          show_command_help "$1" "$2" || exit 1
+          ;;
+      esac
+      exit 0
+      ;;
+  esac
+
+  # Expect at least <group> <command>
+  if [[ $# -lt 2 ]]; then
+    echo "Error: missing <group> <command>" >&2
+    echo
+    print_usage
+    exit 2
+  fi
+
+  local group="$1"; shift
+  local cmd="$1"; shift
+
+  # Validate group directory
+  if [[ ! -d "${ADM_LIB_DIR}/${group}" ]]; then
+    echo "Unknown group: ${group}" >&2
+    echo
+    list_commands || true
+    exit 1
+  fi
+
+  dispatch "${group}" "${cmd}" "$@"
+}
+
+main "$@"
