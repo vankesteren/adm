@@ -77,4 +77,4 @@ $FETCH_CMD "$INSTALL_URL" | env \
 
 echo
 echo "✅ adm update complete."
-echo "   Try: adm --version  or  adm help"
+echo "adm version: ${adm --version}"
