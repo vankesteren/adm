@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
 # lib/self/update.sh — update adm by re-running the online installer
 # Usage:
 #   adm self update [ref]
@@ -11,7 +11,7 @@
 #   BIN_DIR   (auto-detected; e.g., /usr/local/bin)
 #   LIB_DIR   (auto-detected; e.g., /usr/local/lib/adm)
 
-set -eu
+set -euo pipefail
 
 REPO_URL="${REPO_URL:-https://github.com/vankesteren/adm.git}"
 DEFAULT_BRANCH="${BRANCH:-main}"

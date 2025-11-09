@@ -36,7 +36,7 @@ EOF
 }
 
 print_version() {
-  echo "${ADM_NAME} dispatcher 1.0"
+  dispatch "self" "version" "$@"
 }
 
 # Lists all available commands, or those under a specific group
