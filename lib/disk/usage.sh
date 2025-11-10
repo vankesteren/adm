@@ -16,6 +16,12 @@ SCRIPT_NAME="$(basename "$0")"
 
 set -euo pipefail
 
+# Check for sudo privileges if required
+if [ "$REQUIRE_SUDO" = "true" ] && [ "$(id -u)" -ne 0 ]; then
+    echo "[ERROR] This script must be run with sudo or as root." >&2
+    exit 1
+fi
+
 #------------------------------ FUNCTIONS --------------------------------------
 
 # Print help message (only lines starting with ##)
@@ -23,13 +29,6 @@ show_help() {
     grep '^##' "$0" | sed 's/^##[ ]\{0,1\}//'
 }
 
-# Check for sudo privileges if required
-check_sudo() {
-    if [ "$REQUIRE_SUDO" = "true" ] && [ "$(id -u)" -ne 0 ]; then
-        echo "[ERROR] This script must be run with sudo or as root." >&2
-        exit 1
-    fi
-}
 
 #------------------------------ SCRIPT LOGIC -----------------------------------
 
