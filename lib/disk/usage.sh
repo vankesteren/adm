@@ -1,34 +1,37 @@
 #!/usr/bin/env bash
-# Lists user home directories under /data and prints their sizes.
-# Usage:
-#   adm disk usage [options]
-#
-# Options:
-#   --help    Show this message and exit
-#   --human   Show human-readable sizes (default)
-#   --sort    Sort by size descending
-#   --total   Show total size at the end
+##  Show the disk usage per user
+##
+##  Usage:
+##    adm disk usage [options]
+##
+##  Options:
+##    -h, --help       Show this help message and exit
+##    --human   Show human-readable sizes (default)
+##    --sort    Sort by size descending
+##    --total   Show total size at the end
+
+#------------------------------ CONFIGURATION ----------------------------------
+REQUIRE_SUDO=false   # Set to true if this script requires sudo privileges
+SCRIPT_NAME="$(basename "$0")"
 
 set -euo pipefail
 
-usage() {
-  cat <<EOF
-Usage: $(basename "$0") [options]
+#------------------------------ FUNCTIONS --------------------------------------
 
-Lists user home directories under /data and prints their sizes.
-
-Options:
-  --help    Show this message and exit
-  --human   Show human-readable sizes (default)
-  --sort    Sort by size descending
-  --total   Show total size at the end
-
-Examples:
-  $(basename "$0")
-  $(basename "$0") --sort
-  $(basename "$0") --total
-EOF
+# Print help message (only lines starting with ##)
+show_help() {
+    grep '^##' "$0" | sed 's/^##[ ]\{0,1\}//'
 }
+
+# Check for sudo privileges if required
+check_sudo() {
+    if [ "$REQUIRE_SUDO" = "true" ] && [ "$(id -u)" -ne 0 ]; then
+        echo "[ERROR] This script must be run with sudo or as root." >&2
+        exit 1
+    fi
+}
+
+#------------------------------ SCRIPT LOGIC -----------------------------------
 
 DATA_DIR="/data"
 HUMAN=1
@@ -38,11 +41,11 @@ TOTAL=0
 # Parse arguments
 for arg in "$@"; do
   case "$arg" in
-    -h|--help) usage; exit 0 ;;
+    -h|--help) show_help; exit 0 ;;
     --human) HUMAN=1 ;;
     --sort)  SORT=1 ;;
     --total) TOTAL=1 ;;
-    *) echo "Unknown option: $arg" >&2; echo; usage; exit 1 ;;
+    *) echo "Unknown option: $arg" >&2; echo; show_help; exit 1 ;;
   esac
 done
 
