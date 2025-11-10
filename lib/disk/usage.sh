@@ -10,13 +10,12 @@
 ##    --total   Show total size at the end
 
 #------------------------------ CONFIGURATION ----------------------------------
-REQUIRE_SUDO=true   # Set to true if this script requires sudo privileges
 SCRIPT_NAME="$(basename "$0")"
 
 set -euo pipefail
 
 # Check for sudo privileges if required
-if [ "$REQUIRE_SUDO" = "true" ] && [ "$(id -u)" -ne 0 ]; then
+if [ "$(id -u)" -ne 0 ]; then
     echo "[ERROR] This script must be run with sudo or as root." >&2
     exit 1
 fi
