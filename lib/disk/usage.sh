@@ -11,7 +11,7 @@
 ##    --total   Show total size at the end
 
 #------------------------------ CONFIGURATION ----------------------------------
-REQUIRE_SUDO=false   # Set to true if this script requires sudo privileges
+REQUIRE_SUDO=true   # Set to true if this script requires sudo privileges
 SCRIPT_NAME="$(basename "$0")"
 
 set -euo pipefail
