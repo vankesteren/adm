@@ -6,7 +6,6 @@
 ##
 ##  Options:
 ##    -h, --help       Show this help message and exit
-##    --human   Show human-readable sizes (default)
 ##    --sort    Sort by size descending
 ##    --total   Show total size at the end
 
@@ -31,9 +30,7 @@ show_help() {
 
 
 #------------------------------ SCRIPT LOGIC -----------------------------------
-
 DATA_DIR="/data"
-HUMAN=1
 SORT=0
 TOTAL=0
 
@@ -41,7 +38,6 @@ TOTAL=0
 for arg in "$@"; do
   case "$arg" in
     -h|--help) show_help; exit 0 ;;
-    --human) HUMAN=1 ;;
     --sort)  SORT=1 ;;
     --total) TOTAL=1 ;;
     *) echo "Unknown option: $arg" >&2; echo; show_help; exit 1 ;;
@@ -53,16 +49,10 @@ if [[ ! -d "$DATA_DIR" ]]; then
   exit 1
 fi
 
-if [[ "$HUMAN" -eq 1 ]]; then
-  DU_OPTS=(-sh)
-else
-  DU_OPTS=(-sk)
-fi
-
 if [[ "$SORT" -eq 1 ]]; then
-  du "${DU_OPTS[@]}" "${DATA_DIR}"/* 2>/dev/null | sort -hr
+  du -sh "${DATA_DIR}"/* 2>/dev/null | sort -hr
 else
-  du "${DU_OPTS[@]}" "${DATA_DIR}"/* 2>/dev/null
+  du -sh "${DATA_DIR}"/* 2>/dev/null
 fi
 
 if [[ "$TOTAL" -eq 1 ]]; then
