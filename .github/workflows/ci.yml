@@ -23,8 +23,8 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       - name: Install
-        run: curl -fsSL https://raw.githubusercontent.com/vankesteren/adm/HEAD/install.sh | sh
+        run: curl -fsSL https://raw.githubusercontent.com/vankesteren/adm/HEAD/install.sh | sudo sh
 
       # Runs a single command using the runners shell
       - name: Run tests
-        run: curl -fsSL https://raw.githubusercontent.com/vankesteren/adm/HEAD/test.sh | sh
+        run: curl -fsSL https://raw.githubusercontent.com/vankesteren/adm/HEAD/test.sh | sudo sh
