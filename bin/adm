@@ -2,15 +2,11 @@
 ##  adm - lightweight sysadmin tool for compute server
 ##
 ##  Usage:
-##    adm command subommand [options]
+##    adm group command [options]
 ##
 ##  Options:
 ##    -h, --help       Show this help message and exit
 ##
-##  Example:
-##    adm user list - list all users and their emails
-##    adm user add <username> <password> [email] - add a new user
-##    adm disk usage - check disk usage for all users 
 
 #------------------------------ CONFIGURATION ----------------------------------
 set -euo pipefail
@@ -26,14 +22,6 @@ ADM_LIB_DIR="${ADM_LIB_DIR:-/usr/local/lib/adm}"
 
 #------------------------------ FUNCTIONS --------------------------------------
 
-# Print help message (only lines starting with ##)
-show_help() {
-    grep '^##' "$0" | sed 's/^##[ ]\{0,1\}//'
-}
-
-print_version() {
-  cat ${ADM_LIB_DIR}/self/VERSION
-}
 
 # Lists all available commands
 list_commands() {
@@ -48,6 +36,18 @@ list_commands() {
   )
 }
 
+# Print help message (only lines starting with ##)
+show_help() {
+    grep '^##' "$0" | sed 's/^##[ ]\{0,1\}//'
+    echo " Available commands:"
+    list_commands
+}
+
+print_version() {
+  cat ${ADM_LIB_DIR}/self/VERSION
+}
+
+
 # Resolve to an executable script path, allowing hyphen/underscore aliases
 resolve_script_path() {
   local group="$1" cmd="$2"
@@ -56,7 +56,7 @@ resolve_script_path() {
     return 0
   fi
   echo "Command not found: ${group} ${cmd}" >&2
-  echo "Available commands:"
+  echo " Available commands:"
   list_commands
   return 1
 }
@@ -85,18 +85,12 @@ main() {
   # No args -> usage + list
   if [[ $# -eq 0 ]]; then
     show_help
-    echo
-    echo "Available commands:"
-    list_commands || true
     exit 1
   fi
 
   case "${1:-}" in
     -h|--help)
       show_help
-      echo
-      echo "Available commands:"
-      list_commands || true
       exit 0
       ;;
     -v|--version)
