@@ -38,6 +38,8 @@ HUMAN=1
 SORT=0
 TOTAL=0
 
+check_sudo
+
 # Parse arguments
 for arg in "$@"; do
   case "$arg" in
