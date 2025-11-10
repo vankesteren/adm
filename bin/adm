@@ -31,7 +31,7 @@ list_commands() {
         grp="${rel%%/*}"
         cmd="$(basename "${rel%.sh}")"
         desc="$(awk '/^##/{sub(/^##[ ]?/,""); print; exit}' "$ADM_LIB_DIR/$rel" 2>/dev/null)"
-        printf "  adm %s %s - %s\n" "$grp" "$cmd" "${desc}"
+        printf "  adm %s %s -%s\n" "$grp" "$cmd" "${desc}"
       done
   )
 }
