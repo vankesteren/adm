@@ -45,6 +45,7 @@ LIB_DIR="${LIB_DIR:-$LIB_ROOT}"
 REPO_URL="${REPO_URL:-https://github.com/vankesteren/adm}"          # no .git
 INSTALL_URL="https://raw.githubusercontent.com/vankesteren/adm/${REF}/install.sh"
 
+echo "→ Current adm version: $(adm --version)"
 echo "→ Updating adm from ${REPO_URL} (ref: ${REF})"
 echo
 
@@ -56,10 +57,8 @@ curl -fsSL "$INSTALL_URL" | env \
   REPO_URL="$REPO_URL" \
   sh
 
-echo
-echo "✅ adm update complete."
 if [ -x "$BIN_DIR/adm" ]; then
-  echo "✅ adm version: $("$BIN_DIR/adm" --version || true)"
+  echo "→ New adm version: $("$BIN_DIR/adm" --version || true)"
 else
   echo "Note: $BIN_DIR not on PATH or adm not found there."
 fi
