@@ -92,13 +92,9 @@ if ! "$BIN_DIR/adm" --version >/dev/null 2>&1; then
 fi
 
 cat <<EOF
-
-✅ Installed 'adm'.
-
 Binary:  $BIN_DIR/adm
 Library: $LIB_DIR
 
 To get started, run
   adm --help
-
 EOF
