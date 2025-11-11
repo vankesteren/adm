@@ -74,11 +74,11 @@ if [ -d "$LIB_DIR" ]; then
   TMP_OLD="$LIB_DIR.$(date +%s).old"
   mv "$LIB_DIR" "$TMP_OLD"
   mkdir -p "$LIB_DIR"
-  cp -Rp "$REPO_LIB/" "$LIB_DIR/"
+  cp -Rp "$REPO_LIB/*" "$LIB_DIR/"
   rm -rf "$TMP_OLD"
 else
   mkdir -p "$LIB_DIR"
-  cp -Rp "$REPO_LIB/" "$LIB_DIR/"
+  cp -Rp "$REPO_LIB/*" "$LIB_DIR/"
 fi
 
 # Install dispatcher
