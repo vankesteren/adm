@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="105mm"
+   height="55.876221mm"
+   viewBox="0 0 105 55.876221"
+   version="1.1"
+   id="svg1"
+   inkscape:version="1.3.2 (091e20e, 2023-11-25, custom)"
+   sodipodi:docname="logo.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="mm"
+     inkscape:zoom="3.0943651"
+     inkscape:cx="202.94955"
+     inkscape:cy="178.22719"
+     inkscape:window-width="2560"
+     inkscape:window-height="1369"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs1" />
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <path
+       style="fill:#343434;fill-opacity:1;stroke-width:0.79375"
+       d="M 24.190864,8.3160434 C 33.425391,3.4422623 88.848108,3.4422578 95.517483,18.320113 102.28518,33.417299 82.648344,56.284279 60.888001,49.101869 39.12766,41.919459 2.6591778,40.636878 8.8155288,25.245998 14.971879,9.8551324 24.190864,8.3160434 24.190864,8.3160434 Z"
+       id="path1"
+       sodipodi:nodetypes="csssc" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:600;font-stretch:normal;font-size:27.8682px;line-height:1;font-family:'Fira Code';-inkscape-font-specification:'Fira Code Semi-Bold';fill:#fafafa;fill-opacity:1;stroke-width:4.18023"
+       x="26.603998"
+       y="34.802982"
+       id="text1"><tspan
+         sodipodi:role="line"
+         id="tspan1"
+         style="font-style:normal;font-variant:normal;font-weight:600;font-stretch:normal;font-family:'Fira Code';-inkscape-font-specification:'Fira Code Semi-Bold';fill:#fafafa;fill-opacity:1;stroke-width:4.18023"
+         x="26.603998"
+         y="34.802982">adm</tspan></text>
+  </g>
+</svg>
