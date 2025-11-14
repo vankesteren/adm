@@ -7,6 +7,7 @@ check_cmd() {
     echo "Error: command failed — $*" >&2
     exit 1
   fi
+  echo
 }
 
 assert_eq() {
@@ -34,6 +35,8 @@ check_cmd adm user backup testuser1
 check_cmd adm user list
 check_cmd adm user email testuser2
 check_cmd adm user email testuser2 test23@test.com
+check_cmd adm user sudo add testuser3
+check_cmd adm user sudo remove testuser3
 assert_eq $(adm user email testuser2) "<test23@test.com>"
 check_cmd adm user lastactivity
 check_cmd echo "testuser2" | adm user delete testuser2
