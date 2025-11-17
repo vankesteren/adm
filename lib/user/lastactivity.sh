@@ -1,54 +1,45 @@
 #!/usr/bin/env bash
-# adm user lastactivity — show the most recent file activity for all users
-# Scans /data/<username> directories and prints the most recent file access/modification time.
-#
-# Usage:
-#   adm user lastactivity [--help] [--days N]
-#
-# Options:
-#   --help      Show this help message and exit
-#   --days N    Limit to users active in the last N days (default: show all)
-#
-# Example:
-#   adm user lastactivity
-#   adm user lastactivity --days 7
-#
-# Output:
-#   USER        LAST ACTIVITY           AGE
-#   alice       2025-11-09 09:23:01     2 hours ago
-#   bob         2025-11-08 18:44:10     17 hours ago
-#   charlie     2025-11-05 22:14:32     3 days, 14 hours ago
+##  Show the last activity date of each user
+##
+##  Usage:
+##    adm user lastactivity
+##
+##  Options:
+##    -h, --help       Show this help message and exit
 
+#------------------------------ CONFIGURATION ----------------------------------
 set -euo pipefail
 
-usage() {
-  grep '^# ' "$0" | sed 's/^# //'
+# Check for sudo privileges 
+if [ "$(id -u)" -ne 0 ]; then
+    echo "[ERROR] This script must be run with sudo or as root." >&2
+    exit 1
+fi
+
+#------------------------------ FUNCTIONS --------------------------------------
+
+# Print help message (only lines starting with ##)
+show_help() {
+    grep '^##' "$0" | sed 's/^##[ ]\{0,1\}//'
 }
 
+
+#------------------------------ SCRIPT LOGIC -----------------------------------
+
+
+
 DATA_ROOT="/data"
-DAYS_LIMIT=""
 NOW=$(date +%s)
 
-# Parse args
-while [[ $# -gt 0 ]]; do
-  case "$1" in
-    -h|--help)
-      usage
-      exit 0
-      ;;
-    --days)
-      shift
-      DAYS_LIMIT="$1"
-      ;;
-    *)
-      echo "Unknown option: $1" >&2
-      echo
-      usage
-      exit 1
-      ;;
+# Parse arguments
+for arg in "$@"; do
+  case "$arg" in
+    -h|--help) show_help; exit 0 ;;
+    *) echo "Unknown option: $arg" >&2; echo; show_help; exit 1 ;;
   esac
-  shift
 done
+
+
 
 if [[ ! -d "$DATA_ROOT" ]]; then
   echo "Error: data directory '$DATA_ROOT' not found." >&2
@@ -87,11 +78,6 @@ for userdir in "$DATA_ROOT"/*; do
 
   ts_int=${ts%.*}
   age=$(( NOW - ts_int ))
-
-  if [[ -n "$DAYS_LIMIT" ]]; then
-    limit_seconds=$(( DAYS_LIMIT * 86400 ))
-    (( age > limit_seconds )) && continue
-  fi
 
   readable="$(human_elapsed "$age")"
   date_str="$(date -d @"$ts_int" '+%Y-%m-%d %H:%M:%S')"
